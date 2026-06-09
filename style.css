@@ -229,6 +229,12 @@ a:hover {
   padding-top: 24px;
   border-top: 1px solid var(--border);
   display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer-row {
+  display: flex;
   align-items: center;
   justify-content: space-between;
 }
@@ -262,6 +268,12 @@ a:hover {
 .footer-chat:hover {
   color: var(--text);
   text-decoration: none;
+}
+
+.footer-copy {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
 }
 
 /* ── Responsive ───────────────────────────────────────────── */
