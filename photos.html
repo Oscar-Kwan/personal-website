@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photos — Oscar Kwan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container container--wide">
+
+    <header class="header header--photos">
+      <nav class="nav"><a href="/" class="nav-link">← oscar kwan</a></nav>
+      <h1 class="name">photos</h1>
+      <p class="tagline">a running collection of shots i've taken.</p>
+      <p class="photos-gear">Fujifilm X100VI | Contax T2 | Olympus Mju II</p>
+    </header>
+
+    <section class="section">
+      <div class="gallery" id="gallery" aria-label="Photo gallery"></div>
+      <p class="gallery-empty" id="galleryEmpty" hidden>No photos yet — add some in <code>photos.js</code>.</p>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div class="footer-icons">
+          <a href="https://linkedin.com/in/okwan" target="_blank" rel="noopener" class="footer-icon-link footer-icon-link--linkedin" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://instagram.com/_oscarkwan" target="_blank" rel="noopener" class="footer-icon-link footer-icon-link--instagram" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+        <a href="mailto:mail@oscarkwan.ca" class="footer-chat">Let's chat ↗</a>
+      </div>
+      <p class="footer-copy">© 2026 OSCAR KWAN</p>
+    </footer>
+
+  </div>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+    <button class="lightbox-close" id="lbClose" aria-label="Close">×</button>
+    <button class="lightbox-nav lightbox-prev" id="lbPrev" aria-label="Previous photo">‹</button>
+    <button class="lightbox-nav lightbox-next" id="lbNext" aria-label="Next photo">›</button>
+    <figure class="lightbox-figure">
+      <img class="lightbox-img" id="lbImg" alt="" />
+      <figcaption class="lightbox-caption" id="lbCaption"></figcaption>
+    </figure>
+  </div>
+
+  <script src="photos.js"></script>
+</body>
+</html>
