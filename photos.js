@@ -1,90 +1,77 @@
 // ── Your photos ──────────────────────────────────────────────────
 // Drop image files into the photos/ folder, then list them below.
-// Simplest form is just the path:
-//     "photos/DSCF1271.jpg"
-// Or an object with an optional caption and dimensions. Providing
-// w/h makes the justified layout snap in instantly with no reflow:
-//     { src: "photos/DSCF1271.jpg", caption: "Kyoto, 2025", w: 4000, h: 3000 }
+// Include w/h so the layout renders instantly without downloading images first.
 const PHOTOS = [
-  "photos/10_48570028.jpeg",
-  "photos/DSCF2269.JPG",
-  "photos/DSCF2278.JPG",
-  "photos/DSCF2505.JPG",
-  "photos/DSCF2547.JPG",
-  "photos/DSCF2647.JPG",
-  "photos/DSCF2690.JPG",
-  "photos/img20241210_04584880.jpg",
-  "photos/IMG_0423.JPG",
-  "photos/IMG_0430.JPG",
-  "photos/IMG_1596.JPG",
-  "photos/IMG_1600.JPG",
-  "photos/IMG_1617.JPG",
-  "photos/IMG_1621.JPG",
-  "photos/IMG_1624.JPG",
-  "photos/IMG_3275.JPG",
-  "photos/IMG_4421.JPG",
-  "photos/IMG_4422.JPG",
-  "photos/IMG_4464.JPG",
-  "photos/IMG_4465.JPG",
-  "photos/IMG_4466.JPG",
-  "photos/IMG_4684.JPG",
-  "photos/IMG_4686.JPG",
-  "photos/IMG_4689.JPG",
-  "photos/IMG_4694.JPG",
-  "photos/IMG_4697.JPG",
-  "photos/IMG_4760.JPG",
-  "photos/IMG_4982.JPG",
-  "photos/IMG_4983.JPG",
-  "photos/IMG_4988.JPG",
-  "photos/IMG_4994.JPG",
-  "photos/IMG_5139.JPG",
-  "photos/IMG_5144.JPG",
-  "photos/IMG_5147.JPG",
-  "photos/IMG_6262.JPG",
-  "photos/IMG_6268.JPG",
-  "photos/IMG_6269.JPG",
-  "photos/IMG_6485.JPG",
-  "photos/IMG_7891.JPG",
-  "photos/IMG_8551.JPG",
+  { src: "photos/10_48570028.jpeg", w: 2000, h: 1326 },
+  { src: "photos/DSCF2269.JPG", w: 2000, h: 1333 },
+  { src: "photos/DSCF2278.JPG", w: 2000, h: 1333 },
+  { src: "photos/DSCF2505.JPG", w: 1333, h: 2000 },
+  { src: "photos/DSCF2547.JPG", w: 2000, h: 1333 },
+  { src: "photos/DSCF2647.JPG", w: 2000, h: 1333 },
+  { src: "photos/DSCF2690.JPG", w: 2000, h: 1333 },
+  { src: "photos/img20241210_04584880.jpg", w: 1245, h: 2000 },
+  { src: "photos/IMG_0423.JPG", w: 2000, h: 1325 },
+  { src: "photos/IMG_0430.JPG", w: 2000, h: 1325 },
+  { src: "photos/IMG_1596.JPG", w: 1326, h: 2000 },
+  { src: "photos/IMG_1600.JPG", w: 2000, h: 1326 },
+  { src: "photos/IMG_1617.JPG", w: 2000, h: 1326 },
+  { src: "photos/IMG_1621.JPG", w: 2000, h: 1326 },
+  { src: "photos/IMG_1624.JPG", w: 2000, h: 1326 },
+  { src: "photos/IMG_3275.JPG", w: 2000, h: 1326 },
+  { src: "photos/IMG_4421.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4422.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4464.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4465.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4466.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4684.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4686.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4689.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4694.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4697.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4760.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4982.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4983.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4988.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_4994.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_5139.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_5144.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_5147.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_6262.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_6268.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_6269.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_6485.JPG", w: 2000, h: 1333 },
+  { src: "photos/IMG_7891.JPG", w: 2000, h: 1325 },
+  { src: "photos/IMG_8551.JPG", w: 2000, h: 1333 },
 ];
 
 const ROW_HEIGHT = 260;
 const GAP = 10;
 const MAX_PER_ROW = 3;
-const DEFAULT_AR = 1.5;
 
 const galleryEl = document.getElementById("gallery");
 const emptyEl = document.getElementById("galleryEmpty");
 
 const items = PHOTOS.map((p, i) => {
   const data = typeof p === "string" ? { src: p } : p;
-  return { ...data, index: i };
+  return { ...data, index: i, ar: data.w / data.h };
 });
 
 if (!items.length) emptyEl.hidden = false;
 
-function loadDimensions(photos) {
-  return Promise.allSettled(
-    photos.map(
-      (item) =>
-        new Promise((resolve, reject) => {
-          if (item.w && item.h) {
-            resolve({ ...item, ar: item.w / item.h });
-            return;
-          }
-          const img = new Image();
-          img.onload = () =>
-            resolve({ ...item, ar: img.naturalWidth / img.naturalHeight });
-          img.onerror = () => reject(new Error(item.src));
-          img.src = item.src;
-        })
-    )
-  ).then((results) =>
-    results
-      .filter((r) => r.status === "fulfilled")
-      .map((r) => r.value)
-  );
-}
+const io = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const img = entry.target;
+      if (img.dataset.src) {
+        img.src = img.dataset.src;
+        delete img.dataset.src;
+      }
+      io.unobserve(img);
+    });
+  },
+  { rootMargin: "400px 0px" }
+);
 
 function isPortrait(photo) {
   return photo.ar < 1;
@@ -146,11 +133,14 @@ function createTile(photo, width, height) {
   img.className = "gallery-img";
   img.alt = photo.caption || "";
   img.decoding = "async";
-  img.src = photo.src;
+  img.loading = "lazy";
+  img.dataset.src = photo.src;
   img.addEventListener("load", () => fig.classList.add("is-loaded"));
+  img.addEventListener("error", () => fig.remove());
 
   fig.append(img);
   fig.addEventListener("click", () => openLightbox(photo.index));
+  io.observe(img);
   return fig;
 }
 
@@ -178,21 +168,12 @@ function renderGallery(photos) {
   });
 }
 
-let loadedPhotos = [];
-
-loadDimensions(items).then((photos) => {
-  loadedPhotos = photos;
-  if (!photos.length) {
-    emptyEl.hidden = false;
-    return;
-  }
-  renderGallery(photos);
-});
+renderGallery(items);
 
 let resizeTimer;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => renderGallery(loadedPhotos), 150);
+  resizeTimer = setTimeout(() => renderGallery(items), 150);
 });
 
 const lb = document.getElementById("lightbox");
