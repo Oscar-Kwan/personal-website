@@ -3,6 +3,7 @@
 // Include w/h so tiles reserve space before images load.
 const PHOTOS = [
   { src: "photos/10_48570028.jpeg", w: 2000, h: 1326 },
+  { src: "photos/DSCF2009.JPG", w: 2000, h: 1333 },
   { src: "photos/DSCF2269.JPG", w: 2000, h: 1333 },
   { src: "photos/DSCF2278.JPG", w: 2000, h: 1333 },
   { src: "photos/DSCF2505.JPG", w: 1333, h: 2000 },
