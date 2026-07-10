@@ -1,6 +1,6 @@
 // ── Your photos ──────────────────────────────────────────────────
 // Drop image files into the photos/ folder, then list them below.
-// Include w/h so the layout renders instantly without downloading images first.
+// Include w/h so tiles reserve space before images load.
 const PHOTOS = [
   { src: "photos/10_48570028.jpeg", w: 2000, h: 1326 },
   { src: "photos/DSCF2269.JPG", w: 2000, h: 1333 },
@@ -23,14 +23,12 @@ const PHOTOS = [
   { src: "photos/IMG_4464.JPG", w: 2000, h: 1333 },
   { src: "photos/IMG_4465.JPG", w: 2000, h: 1333 },
   { src: "photos/IMG_4466.JPG", w: 2000, h: 1333 },
-  { src: "photos/IMG_4684.JPG", w: 2000, h: 1333 },
   { src: "photos/IMG_4686.JPG", w: 2000, h: 1333 },
   { src: "photos/IMG_4689.JPG", w: 2000, h: 1333 },
   { src: "photos/IMG_4694.JPG", w: 2000, h: 1333 },
   { src: "photos/IMG_4697.JPG", w: 2000, h: 1333 },
   { src: "photos/IMG_4760.JPG", w: 2000, h: 1333 },
   { src: "photos/IMG_4982.JPG", w: 2000, h: 1333 },
-  { src: "photos/IMG_4983.JPG", w: 2000, h: 1333 },
   { src: "photos/IMG_4988.JPG", w: 2000, h: 1333 },
   { src: "photos/IMG_4994.JPG", w: 2000, h: 1333 },
   { src: "photos/IMG_5139.JPG", w: 2000, h: 1333 },
@@ -44,10 +42,6 @@ const PHOTOS = [
   { src: "photos/IMG_8551.JPG", w: 2000, h: 1333 },
 ];
 
-const ROW_HEIGHT = 260;
-const GAP = 10;
-const MAX_PER_ROW = 3;
-
 const galleryEl = document.getElementById("gallery");
 const emptyEl = document.getElementById("galleryEmpty");
 
@@ -58,123 +52,60 @@ const items = PHOTOS.map((p, i) => {
 
 if (!items.length) emptyEl.hidden = false;
 
-const io = new IntersectionObserver(
+let revealIndex = 0;
+
+const revealIo = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      const img = entry.target;
-      if (img.dataset.src) {
+      const tile = entry.target;
+      const delay = (revealIndex++ % 5) * 70;
+      tile.style.setProperty("--reveal-delay", delay + "ms");
+      tile.classList.add("is-visible");
+
+      const img = tile.querySelector("img");
+      if (img?.dataset.src) {
         img.src = img.dataset.src;
         delete img.dataset.src;
       }
-      io.unobserve(img);
+
+      revealIo.unobserve(tile);
     });
   },
-  { rootMargin: "400px 0px" }
+  { rootMargin: "250px 0px", threshold: 0.05 }
 );
 
-function isPortrait(photo) {
-  return photo.ar < 1;
-}
-
-function rowWidthAtHeight(row, height = ROW_HEIGHT) {
-  if (!row.length) return 0;
-  const gaps = (row.length - 1) * GAP;
-  return row.reduce((sum, photo) => sum + photo.ar * height, 0) + gaps;
-}
-
-function isLandscapePortraitPair(row) {
-  return row.length === 2 && isPortrait(row[0]) !== isPortrait(row[1]);
-}
-
-function shouldEndRow(row, containerWidth) {
-  if (row.length >= MAX_PER_ROW) return true;
-  if (rowWidthAtHeight(row) >= containerWidth) return true;
-  if (isLandscapePortraitPair(row)) return true;
-  return false;
-}
-
-function buildRows(photos, containerWidth) {
-  const rows = [];
-  let index = 0;
-
-  while (index < photos.length) {
-    const row = [photos[index++]];
-
-    while (index < photos.length && row.length < MAX_PER_ROW) {
-      const next = photos[index];
-      const candidate = [...row, next];
-
-      if (rowWidthAtHeight(candidate) > containerWidth) break;
-
-      row.push(next);
-      index++;
-
-      if (shouldEndRow(row, containerWidth)) break;
-    }
-
-    rows.push({ photos: row, justify: false });
-  }
-
-  for (let i = 0; i < rows.length - 1; i++) rows[i].justify = true;
-
-  return rows;
-}
-
-function createTile(photo, width, height) {
+function createTile(photo) {
   const fig = document.createElement("button");
-  fig.className = "gallery-item";
+  fig.className = "gallery-item is-pending";
   fig.type = "button";
-  fig.style.width = width + "px";
-  fig.style.height = height + "px";
+  fig.style.setProperty("--ar", String(photo.ar));
   fig.setAttribute("aria-label", photo.caption || "Open photo");
 
   const img = document.createElement("img");
   img.className = "gallery-img";
   img.alt = photo.caption || "";
   img.decoding = "async";
-  img.loading = "lazy";
   img.dataset.src = photo.src;
-  img.addEventListener("load", () => fig.classList.add("is-loaded"));
+  img.addEventListener("load", () => {
+    fig.classList.remove("is-pending");
+    fig.classList.add("is-loaded");
+  });
   img.addEventListener("error", () => fig.remove());
 
   fig.append(img);
   fig.addEventListener("click", () => openLightbox(photo.index));
-  io.observe(img);
+  revealIo.observe(fig);
   return fig;
 }
 
 function renderGallery(photos) {
-  const width = galleryEl.clientWidth;
-  if (!width || !photos.length) return;
-
   galleryEl.innerHTML = "";
-  const rows = buildRows(photos, width);
-
-  rows.forEach(({ photos: rowPhotos, justify }) => {
-    const rowEl = document.createElement("div");
-    rowEl.className = "gallery-row";
-
-    const gaps = (rowPhotos.length - 1) * GAP;
-    const totalAr = rowPhotos.reduce((sum, p) => sum + p.ar, 0);
-    const rowHeight = justify ? (width - gaps) / totalAr : ROW_HEIGHT;
-
-    rowPhotos.forEach((photo) => {
-      const itemWidth = photo.ar * rowHeight;
-      rowEl.appendChild(createTile(photo, itemWidth, rowHeight));
-    });
-
-    galleryEl.appendChild(rowEl);
-  });
+  revealIndex = 0;
+  photos.forEach((photo) => galleryEl.appendChild(createTile(photo)));
 }
 
 renderGallery(items);
-
-let resizeTimer;
-window.addEventListener("resize", () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => renderGallery(items), 150);
-});
 
 const lb = document.getElementById("lightbox");
 const lbImg = document.getElementById("lbImg");
